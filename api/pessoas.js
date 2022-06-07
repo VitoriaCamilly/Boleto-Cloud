@@ -1,5 +1,12 @@
+const express = require("express");
 const router = express.Router();
-const listaPessoa = [];
+const listaPessoa = [
+    {
+        cod: 1,
+        nome: "Camilly",
+        cpf: "12345678912"
+    }
+];
 
 function addPessoa(pessoa){
     pessoa.cod = listaPessoa.length + 1;
@@ -28,26 +35,26 @@ function deletarPessoa(cod) {
     return listaPessoa;
 };
 
-router.get("/api/pessoas", (req, res) => {
+router.get("/", (req, res) => {
     res.json(buscarPessoa());
 });
 
-router.get("/api/pessoas/:cod", (req, res) => {
+router.get("/:cod", (req, res) => {
     res.json(buscarPessoaIndividual(cod));
 });
 
-router.post("/api/pessoas/:cod", (req, res) => {
+router.post("/:cod", (req, res) => {
     res.json(addPessoa(pessoa));
 });
 
-router.put("/api/pessoas/:cod", (req, res) => {
+router.put("/:cod", (req, res) => {
     res.json(editarPessoa(cod, pessoa));
 });
 
-router.delete("/api/pessoas/:cod", (req, res) => {
+router.delete("/:cod", (req, res) => {
     res.json(deletarPessoa(cod));
 });
 
 module.exports = {
-    
+    router, buscarPessoa, buscarPessoaIndividual, addPessoa, editarPessoa, deletarPessoa
 }
