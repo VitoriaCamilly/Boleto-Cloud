@@ -41,11 +41,11 @@ router.get("/", (req, res) => {
     res.json(getBoleto());
 });
 
-router.get("/:cod", (req, res) => {
+router.get("/buscarID/:cod", (req, res) => {
     res.json(getBoletoId(cod));
 });
 
-router.get("/:cod", (req, res) => {
+router.get("/buscarPessoa/:cod", (req, res) => {
     res.json(getBoletoPessoa(cod));
 });
 
