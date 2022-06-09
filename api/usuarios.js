@@ -10,7 +10,15 @@ const listaUsuario = [
 
 function addUsuario(usuario){
     usuario.cod = listaUsuario.length + 1;
-    listaUsuario.push(usuario);
+   if (usuario.nome){
+        if (usuario.senha){
+            listaUsuario.push(usuario);
+        } else {
+            return "Não é possível cadastrar sem a senha!"
+        }
+    } else {
+        return "Não é possível cadastrar sem o Nome!"
+    }
     return usuario;
 }
 
@@ -40,19 +48,19 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:cod", (req, res) => {
-    res.json(buscarUsuarioIndividual(cod));
+    res.json(buscarUsuarioIndividual(req.params.cod));
 });
 
-router.post("/:cod", (req, res) => {
-    res.json(addUsuario(usuario));
+router.post("/", (req, res) => {
+    res.json(addUsuario(req.body));
 });
 
 router.put("/:cod", (req, res) => {
-    res.json(editarUsuario(cod, usuario));
+    res.json(editarUsuario(req.params.cod, req.body));
 });
 
 router.delete("/:cod", (req, res) => {
-    res.json(deletarUsuario(cod));
+    res.json(deletarUsuario(req.params.cod));
 });
 
 module.exports = {

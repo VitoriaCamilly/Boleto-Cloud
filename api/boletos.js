@@ -13,7 +13,19 @@ const listaBoletos = [
 
 function addboleto(boleto){
     boleto.cod = listaBoletos.length + 1;
-    listaBoletos.push(boleto);
+    if (boleto.id_pessoa){
+        if (boleto.id_usuario){
+            if(boleto.valor <= 0){
+                listaBoletos.push(boleto);
+            } else {
+                return "Não é possível criar com o valor igual ou menor que zero!"
+            }
+        } else {
+            return "Não é possível criar sem um Usuário!"
+        }
+    } else {
+        return "Não é possível criar sem uma pessoa!"
+    }
     return boleto;
 }
 
@@ -42,19 +54,19 @@ router.get("/", (req, res) => {
 });
 
 router.get("/buscarID/:cod", (req, res) => {
-    res.json(getBoletoId(cod));
+    res.json(getBoletoId(req.params.cod));
 });
 
 router.get("/buscarPessoa/:cod", (req, res) => {
-    res.json(getBoletoPessoa(cod));
+    res.json(getBoletoPessoa(req.params.cod));
 });
 
-router.post("/:cod", (req, res) => {
-    res.json(addboleto(boleto));
+router.post("/", (req, res) => {
+    res.json(addboleto(req.body));
 });
 
 router.put("/:cod", (req, res) => {
-    res.json(editarboleto(cod, boleto));
+    res.json(editarboleto(req.params.cod, req.body));
 });
 
 module.exports = {

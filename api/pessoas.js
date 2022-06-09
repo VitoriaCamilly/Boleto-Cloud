@@ -10,7 +10,15 @@ const listaPessoa = [
 
 function addPessoa(pessoa){
     pessoa.cod = listaPessoa.length + 1;
-    listaPessoa.push(pessoa);
+    if (pessoa.nome){
+        if (pessoa.cpf){
+            listaPessoa.push(pessoa);
+        } else {
+            return "Não é possível cadastrar sem o CPF!"
+        }
+    } else {
+        return "Não é possível cadastrar sem o Nome!"
+    }
     return pessoa;
 };
 
@@ -40,19 +48,19 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:cod", (req, res) => {
-    res.json(buscarPessoaIndividual(cod));
+    res.json(buscarPessoaIndividual(req.params.cod));
 });
 
-router.post("/:cod", (req, res) => {
-    res.json(addPessoa(pessoa));
+router.post("/", (req, res) => {
+    res.json(addPessoa(req.body));
 });
 
 router.put("/:cod", (req, res) => {
-    res.json(editarPessoa(cod, pessoa));
+    res.json(editarPessoa(req.params.cod, req.body));
 });
 
 router.delete("/:cod", (req, res) => {
-    res.json(deletarPessoa(cod));
+    res.json(deletarPessoa(req.params.cod));
 });
 
 module.exports = {
