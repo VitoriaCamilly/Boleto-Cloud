@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { listaBoletos } = require("./listaBoletos");
 const listaPessoa = [
     {
         cod: 1,
@@ -8,10 +9,10 @@ const listaPessoa = [
     }
 ];
 
-function addPessoa(pessoa){
+function addPessoa(pessoa) {
     pessoa.cod = listaPessoa.length + 1;
-    if (pessoa.nome){
-        if (pessoa.cpf){
+    if (pessoa.nome) {
+        if (pessoa.cpf) {
             listaPessoa.push(pessoa);
         } else {
             return "Não é possível cadastrar sem o CPF!"
@@ -22,16 +23,16 @@ function addPessoa(pessoa){
     return pessoa;
 };
 
-function buscarPessoa(){
-    return listaPessoa;   
+function buscarPessoa() {
+    return listaPessoa;
 };
 
-function buscarPessoaIndividual(cod){
+function buscarPessoaIndividual(cod) {
     const pessoa = listaPessoas.find(pessoa => pessoa.cod == cod);
     return pessoa;
 };
 
-function editarPessoa(cod, pessoa){
+function editarPessoa(cod, pessoa) {
     const indice = listaPessoa.findIndex(pessoa => pessoa.cod == cod);
     listaPessoa[indice] = pessoa;
     return pessoa;
@@ -39,8 +40,14 @@ function editarPessoa(cod, pessoa){
 
 function deletarPessoa(cod) {
     const indice = listaPessoa.findIndex(pessoa => pessoa.cod == cod);
-    listaPessoa.splice(indice, 1);
-    return listaPessoa;
+    const boleto = listaBoletos.find(pessoa => pessoa.id_pessoa == cod);
+    if (boleto == undefined) {
+        listaPessoa.splice(indice, 1);
+        return listaPessoa;
+    } else {
+        return "Não é Possível deletar pessoa"
+
+    }
 };
 
 router.get("/", (req, res) => {

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { listaBoletos } = require("./listaBoletos")
 const listaUsuario = [
     {
         cod: 1,
@@ -8,10 +9,10 @@ const listaUsuario = [
     }
 ];
 
-function addUsuario(usuario){
+function addUsuario(usuario) {
     usuario.cod = listaUsuario.length + 1;
-   if (usuario.nome){
-        if (usuario.senha){
+    if (usuario.nome) {
+        if (usuario.senha) {
             listaUsuario.push(usuario);
         } else {
             return "Não é possível cadastrar sem a senha!"
@@ -22,16 +23,16 @@ function addUsuario(usuario){
     return usuario;
 }
 
-function buscarUsuario(){
-    return listaUsuario;   
+function buscarUsuario() {
+    return listaUsuario;
 }
 
-function buscarUsuarioIndividual(cod){
+function buscarUsuarioIndividual(cod) {
     const usuario = listaUsuario.findIndex(usuario => usuario.cod == cod);
     return usuario;
 }
 
-function editarUsuario(cod, usuario){
+function editarUsuario(cod, usuario) {
     const indice = listaUsuario.findIndex(usuario => usuario.cod == cod);
     listaUsuario[indice] = usuario;
     return usuario;
@@ -39,8 +40,13 @@ function editarUsuario(cod, usuario){
 
 function deletarUsuario(cod) {
     const indice = listaUsuario.findIndex(usuario => usuario.cod == cod);
-    listaUsuario.splice(indice, 1);
-    return listaUsuario;
+    const boleto = listaBoletos.find(usuario => usuario.id_usuario == cod);
+    if (boleto == undefined) {
+        listaUsuario.splice(indice, 1);
+        return listaUsuario;
+    } else {
+        return "Não é Possível deletar Usuário"
+    }
 }
 
 router.get("/", (req, res) => {
